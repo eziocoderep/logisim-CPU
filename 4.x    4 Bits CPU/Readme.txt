@@ -14,7 +14,7 @@ open the .circ file 4.0.1...
 find the ram chip on the far right, on the memory bus
 right click and load image of Nprime or Sum1000
 
-In logisim "Ssimulate" menu, select "Ticks enable" and a frequency.
+In logisim "Simulate" menu, select "Ticks enable" and a frequency.
 In the top left of the circuit click the "ON" light green button.
 (you may have to hold it for a bit if you select a very slow frequecy like 1Hz)
 

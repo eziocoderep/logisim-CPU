@@ -1,6 +1,6 @@
 
 8 Bits CPU
-This the first 8 bit machine, ram is still done in a single chip.
+This is my first 8 bit machine, ram is still done in a single chip.
 
 New instruction set, that will be expanded.
 It comes with 2 test progamm written in the cpu asm:

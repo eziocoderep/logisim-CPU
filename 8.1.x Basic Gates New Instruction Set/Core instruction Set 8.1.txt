@@ -1,0 +1,33 @@
+
+8 BITS NAND CPU 8.1.0 REFERENCE DATA
+
+8 bits data bus and 12 bits address bus
+7 8 bits general purpose registers (r0=constant)
+116 bits double register, Return Address
+Interrupts at end of current instruction
+Memory mapped I/O for  keyboard and a  16 char hex led screen with GPU
+
+		CORE INSTRUCTION SET
+
+MOVE           0YX0    Y=X                                     REGISTERS
+ADD (c)        1YXZ    y=X+Z                                   0 Cost                    1
+                                                               2                         3
+						               4                         5                                                                                                 
+INC (c)        20YX    Y=X+1                                   6 Load Store     7 Mem Index
+NOT            21YX    Y=NOT(X)                                8-9  
+SLL  (c)       22YX     Y=SLL(X)                               A-B    
+XOR            23YX     Y=XOR(Y,X)                             C-D RA Return Address
+                                                               E-F 
+LOAD a/r       6adr     r6=MEM(adr+r7)
+STORE a/r      7adr      MEM(adr+r7)=r6
+
+LOAD Imm       8Yxx      Y=xx
+LOAD           9adr      r6=MEM((adr)
+STORE          Aadr      MEM(adr)=r6
+GOTO           Badr      PC=adr
+CALL           Cadr      PC=adr   RA=PC
+BRANCH 0       Dadr      IF  r6=0  PC=adr
+BRANCH C.out   Eadr      If C.out=1  PC=adr
+
+RETURN         FFFE                  PC=RA
+HALT           FFFF                  Halt

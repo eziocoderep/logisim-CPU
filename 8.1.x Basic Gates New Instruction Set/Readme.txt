@@ -1,6 +1,6 @@
 
 8 Bits CPU
-This the first 8 bit machine, ram is still done in a single chip.
+This is my first 8 bit machine, ram is still done in a single chip.
 
 New instruction set, that will be expanded.
 It comes with 2 test progamm written in the cpu asm:
@@ -9,7 +9,7 @@ It comes with 2 test progamm written in the cpu asm:
 
 To run the simulation:
 open logisim
-open the .circ file 4.0.1...
+open the .circ file
 find the ram chip on the far right
 right click and "load image" of Nprime or Sum1000
 

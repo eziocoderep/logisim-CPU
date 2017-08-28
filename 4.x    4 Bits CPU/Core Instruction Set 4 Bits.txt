@@ -1,0 +1,48 @@
+
+
+	4 BITS CPU "MINI4+" REFERENCE DATA    v 2.2
+
+4 bits Data bus and 8 bits Address bus
+8 registers, 3 ALUs and 20 states FSA 
+
+ REGISTERS
+
+4 general purpose and 4 system registers
+a=input       PC=reserved for program counter
+b=input       INS OP= res Instruction Opcode
+c=ALU resut   INS Adr Ext 1= res Address Extention 1
+d=free        INS Adr Ext 2= res Address Extention 2
+
+
+INSTRUCTION FORMATS
+
+R TYPE  0XXX              
+J TYPE  1XXX  XXXX  XXXX 
+At state 7 if OP=R type => Jump to state 16 else continue
+
+
+	CORE INTRUCTION SET
+
+ALU                        MOVE
+
+0000 c=a+b                 0100 d=b
+0001 c=not(b)              0101 d=c
+0010 c=SLL(a)              0110 a=d
+0011 c=XOR(a,b)            0111 b=d
+
+
+LOAD Imm   1000 XXXX VVVV  a=vvvv
+
+LOAD       1001 AAAA AAAA  b=mem(aaaaaaaa)
+
+STORE      1010 AAAA AAAA  mem(aaaaaaaa)=c
+
+GO TO      1011 AAAA AAAA  PC=aaaaaaaa
+
+BRANCH  0  1100 AAAA AAAA  b=0 => PC=aaaaaaaa ELSE continue
+
+BRANCH NEG 1101 AAAA AAAA  b=negative PC=aaaaaaaa ELSE continue
+
+NOP        1110 XXXX XXXX  no operation
+ 
+HALT       1111 XXXX XXXX  Halt

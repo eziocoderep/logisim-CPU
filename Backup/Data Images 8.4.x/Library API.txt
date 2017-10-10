@@ -1,0 +1,12 @@
+
+  Library API
+ 
+  900 _loadOsFunction(r2)
+  930 _getChar() -> r6
+  940 _putChar(r3)
+  a50 _GetLine() -> KB Buffer [c42-c5f]
+  ac0 _printString(r4-5)
+  af0 _reloadCmd
+  af2 _exec(r3)
+  b80 _printBiteDec(r3)
+  bb6 _printBiteHex(r3) 

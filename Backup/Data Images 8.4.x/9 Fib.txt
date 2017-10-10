@@ -1,0 +1,106 @@
+Recursive Fib(n) to test system and stack stability
+
+09 04 00 00 2c 04  
+46 69 62 00 00 00 00 00 00 00 00 00 2e 42 49 4e
+
+000 0000 b0aa                              r2
+010 836e c940 833d c940   ca50 9c42 b0a4 2665
+020 2950 9c43 36d0 1265   b092 f010 c054 f150
+030 860a 2756 2840 2950   2756 2930 b09a c940
+040 0340 3330 c940 8320   c940 900f 2361 d0e4 
+050 2011 b02a f150 0650   d086 8601 2365 d08c
+060 35ff f0c0 f0d0 f050   f050 c054 f160 f150 
+070 f060 35ff f050 c054   f150 f160 f1d0 f1c0 
+080 1656 f060 fffe 8600   f060 fffe 8601 f060
+090 fffe 0620 a00f 8100   b02a 3330 c940 2830
+0a0 3330 b03e 0560 860a   b0e0 8346 c940 8369
+0b0 c940 8362 c940 8328   c940 836e c940 836e
+0c0 c940 8329 c940 8320   c940 8364 c940 8365
+0d0 c940 8363 c940 8320   c940 836e c940 b010
+0e0 35d0 b01e 830a c940   baf0
+
+Main
+0aa 8346 c940 Print intro
+    8369 c940
+    8362 c940 
+    8328 c940
+    836e c940 
+    836e c940
+    8329 c940 
+    8320 c940 _putchar("Fib(nn) ")
+    8364 c940
+    8365 c940
+    8363 c940 
+    8320 c940
+    836e c940 _putchar("dec n")    
+    b010     
+
+010 836e c940 
+    833d c940 _putchar(n,=)
+    ca50      _getline()
+    9c42
+    (b0a4)      //b0a4 Patch 3 
+01e 2665 r5 = 1st char-30  
+    2950 9c43
+    36d0   
+    1265 r2 = 1stchar * 2nd char = kmax 
+    (8100)    r1 = 0 = k  //b092 Patch 1
+02a f010      push k
+    c054      call fib(k)
+    f150      r5 = fib(k)
+    860a 2756 HL=fib(k)/10
+    2840 
+    2950 2756 HL=fib(k)/100    
+    2930 (c940) //b09a Patch 2 
+03e c940 0340 
+    3330 c940
+    8320 c940 _putchar(fib/100,fib/1-,fib, ' ')
+    900f 2361 
+    (daf0)    if k = kmax goto exit program //d0e4 Exit patch
+    2011      k++
+    b02a      else goto next k
+
+//Fib(n) gets n from stack, returns result on stack
+054 f150      r5=n from stack
+    0650 d086 if n=0 goto zero
+    8601 2365
+    d08c      if n=1 goto one
+    35ff      n--
+    f0c0 f0d0 push RA
+    f050 f050 push r5 twice STACK= RA, r5(n-1), r5(n-1)
+    c054 call fib(n-1)      STACK= RA, r5(n-1), resultFib(n-1)
+    f160      r6=partial result
+    f150 f060 r5=n-1        STACK= RA, resultFib(n-1)
+    35ff f050               STACK= RA, resultFib(n-1), r5(n-2)
+    c054 call fib(n-2)      STACK= RA, resultFib(n-1), resultFib(n-2)
+    f150 f160 pop partials
+    f1d0 f1c0 pop RA
+    1656      r6= (n-1) + Fib(n-2) 
+    f060      push result
+    fffe      return
+//zero
+086 8600 f060 push 00
+    fffe      return
+//one
+08c 8601 f060 push 01
+    fffe      return
+
+//Patch 1 r2 is getting corrupted, save it in a static var
+092 0620 a00f 00f = r2
+    8100 b02a return to loop
+
+//Patch 2 raw data need to be converted in ascii before printing
+09a 3330 c940
+    2830 3330 
+    b03e
+
+//Patch 3 1st char *10 and then add
+0a4 0560
+    860a b0e0
+
+0e0 35d0 b01e still need -30 hex
+
+// Exit patch
+0e4 830a c940 add /n before exit
+    baf0 
+        

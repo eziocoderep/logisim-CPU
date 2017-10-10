@@ -1,0 +1,215 @@
+8 Dir.BIN
+
+08 08 00 00 28 04 30 04  
+44 69 72 00 00 00 00 00 00 00 00 00 2e 42 49 4e
+
+Check if a parameter was passed from Cmd (default = 02)
+load target inode and check if it's a dir
+Print on screen info using 9 char for file name
+Check free space on disk too
+
+Main
+ 
+000 0000 b010                            Sz
+010 0610 d03a 8601 2361   d024 9c45 0160 9c46 
+020 0260 b02c 9c44 0160   9c45 0260 31d0 32d0 
+030 830a 2613 2910 1112   b03c 8102 0610 36c1 
+040 2b66 d068 8602 afe0   8630 afe1 0710 6c00 
+050 afe0 d068 8630 afe1   8700 9c00 2361 d076 
+060 9c20 8720 2361 d076   836e c940 8344 c940
+070 830a c940 baf0 b0ea   6c00 0560 2077 6c00
+
+080 1565 2077 6c00 1565   86df 2365 d090 b068                           
+090 86e1 1767 0870 890c   8707 4687 8201 d0c2
+0a0 8709 4687 8202 d0c2   870b 4687 8203 d0c2
+0b0 870d 4687 8204 d0c2   870f 4687 8205 d0c2 
+0c0 8206 8704 8510 4387   2077 4487 0630 afe0
+0d0 0650 afe1 2055 2033   34ff 0640 d0e0 b0cc
+0e0 32ff 0620 d0f4 2077   b0c6 9c00 36fe d094
+0f0 371d b078 8701 4687   2266 a00e 8100 8800 
+
+100 8904 900e 2361 d15e   2011 8700 4387 cb80
+110 8320 c940 8701 4387   cb80 8320 c940 8710 
+120 4387 b158 c940 2077   861a 2367 d130 b120 
+130 871c 4387 c940 871d   4387 c940 871e 4387
+140 c940 871f 4387 c940   830a c940 8620 1886 
+150 2a60 d102 2099 b102   0630 d130 b124 8603 
+160 afe0 8610 afe1 8604   afe0 8611 afe1 8605 
+170 afe0 8612 afe1 8606   afe0 8613 afe1 8100
+
+180 8700 8800 8904 4687   d18c b18e 2011 86ff 
+190 2367 d198 2077 b186   0310 cb80 8320 c940 
+1a0 8366 c940 8372 c940   8365 c940 8365 c940
+1b0 8320 c940 8342 c940   836c c940 836f c940
+1c0 8363 c940 836b c940   8373 c940 830a c940
+1d0 baf0
+    
+000
+002 b010
+
+//check for args in r1 (rg flag passed by CMD)
+//dir expects a 2 char decimal number
+010 0610 d03a if r1=0 goto no arg
+014 8601 2361
+    d024      if r1=1 goto +44
+01a 9c45 0160
+    9c46 0260 r1-2 = arg
+    b02c      goto decToHex
+//+44
+024 9c44 0160
+    9c45 0260 r1-2 = arg
+//decToHex
+02c 31d0 32d0 r1-2 -= '0'
+    830a 2613 HL=r1*0a
+    2910 1112 r1=(r1*0a)+r2 = Hex
+    b03c      goto loadInode
+//no arg
+03a 8102 
+
+//loadInode
+03c 0610      r6 = i node number requested in hex
+    36c1 2b66 r6 = sign(id - 3f)
+    d068      if positive goto invalid id
+    8602 afe0
+    8630 afe1 _copyHDtoRam(02 to 30) //load inodeTable
+    0710 6c00 r6=block containing inode
+    afe0 d068 if block = 00 goto invalid id
+    8630 afe1 _copyHDtoRam(xx to 30) //load blockContaininginode
+    8700      r7 = offset = 00
+    9c00 
+    2361 d076 if 1st inode goto check dir(offset 00)
+    9c20 8720
+    2361 d076 if 2nd inode goto check dir(offset 20)
+         else invalid id
+
+// invalid file id or parameter or file tipe  
+068 836e c940
+    8344 c940
+    830a c940 _putchar(n,D,/a)
+    baf0      _exec(7) return to CMD
+
+// check dir
+076 (371d)    r7 = offset +=1d //b0ea Patch 1
+    6c00 0560 r5 = [c1d]
+    2077 6c00
+    1565      r5= c1d+c1e
+    2077 6c00
+    1565      r5= c1d+c1e+c1f
+    86df 2365 r6 = df = D+I+R
+    d090      if file = .DIR goto load DIR
+    b068      else goto invalid id                     
+
+// load DIR
+090 86e1 1767 r7 = offset
+    0870 890c GP(8-9) = c00+offset
+    8707 4687 r6 = c00+offset+frame offset
+    8201 d0c2 if 2nd frame = 0 Number of pointers = 1 
+    8709 4687
+    8202 d0c2 if 3rd N = 2   
+    870b 4687
+    8203 d0c2 N = 3
+    870d 4687
+    8204 d0c2 N = 4
+    870f 4687
+    8205 d0c2 N = 5
+    8206      N = 6 r2 = number of pointers
+0c2 8704            r7 = adr offset of this pointer
+    8510            r5 = ram adr in blocks 10 = [400]
+// next pointer
+0c6 4387            r3 = buffer + offset +2 each loop = block adr on HD
+    2077 4487       r4 = size in blocks of this pointer
+// copy next block
+0cc 0630 afe0
+    0650 afe1 _copyHDtoRam
+    2055 2033 ram adr++ hd adr++
+    34ff 0640 number of blocks--
+    d0e0      if number of blocks = 0 goto end Of pointer
+    b0cc      else copy next block 
+//end of pointer
+0e0 32ff      number of pointers--
+    0620 d0f4 if nuber of pointers = 0 goto loaded
+    2077 b0c6 else offset++ goto next pointer
+
+//Patch 1
+0ea 9c00 36fe
+    d094      if id = 2 (root) skip checkdir
+    371d b078 
+
+//loaded
+GP(8-9)= c00+offset
+[c00] block containing the inode n
+[400] buffer cointaining dir n
+
+0f4 8701
+    4687 2266 r6 = size of dir in blocks * 2
+    a00e      00e = size * 2 = number of files
+    8100 
+    8800 8904 GP = 400
+//next file
+102 900e 2361
+    d154      il r1 = number of files goto free space
+    2011      else n files++
+    8700 4387 r3 = 400 + 20*loop + 00 = file id
+    cb80      _printBiteDec(r3)
+    8320 c940 _putchar(' ')
+    8701 4387 r3 = file size in blocks
+    cb80      _printBiteDec(r3)
+    8320 c940 _putchar(' ')
+    8710 
+//next char
+120 4387 (d130) if char(i)=00 goto skip /b158 Patch 1
+    c940 2077 else print char and r7++
+    861a 2367 
+    d130      if i = 10 goto skip
+    b120      else goto next char
+//skip
+130 871c 4387 print last 4 chars
+    c940 871d
+    4387 c940
+    871e 4387
+    c940 871f
+    4387 c940
+    830a c940
+    8620 1886 GP + 20 
+    2a60 d102 if carry = 0 goto next file
+    2099 b102 else r9++ and got to next file 
+
+//Patch 1 data needs to be in r3
+158 0630 d130 b124
+
+//free space
+15e 8603 afe0 ram [400-4ff]= i node tables
+    8610 afe1
+    8604 afe0
+    8611 afe1
+    8605 afe0
+    8612 afe1
+    8606 afe0
+    8613 afe1
+    8100 8700 free = 0 i = 0
+    8800 8904 GP=400
+//next block
+186 4687 d18c if block(i) = 0 goto free++    
+    b18e      else skip    
+//free++
+18c 2011      free++
+//skip
+18e 86ff 2367    
+    d198      if block = ff goto print
+    2077 b186 else goto next block
+//print
+198 0310 cb80 _printBiteDec(free)
+    8320 c940 _putchar( free Blocks\n)
+    8366 c940
+    8372 c940
+    8365 c940
+    8365 c940
+    8320 c940
+    8342 c940
+    836c c940
+    836f c940
+    8363 c940
+    836b c940
+    8373 c940
+    830a c940
+    baf0

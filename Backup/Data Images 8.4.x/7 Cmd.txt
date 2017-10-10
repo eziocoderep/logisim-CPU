@@ -1,0 +1,211 @@
+CMD.bin for MyOs 1.0.1
+
+Print prompt
+Get one line of input from user
+Parse it for Token, File Id, parameter and error
+invalid input format
+Deal with file parameters
+Deal with file Id
+invalid inode number
+valid inode, invalid file type
+----Deal with token
+----invalid token
+
+Main
+
+000 0000 b010 0150             b140             
+010 833e c940 ca50 9c42   0360 36c6 2b66 d02a
+020 0630 36d0 2b66 d058   b04c 0630 36a5 2b66
+030 d03c 0630 36bf 2b66   d00a b04c 0630 3685
+040 2b66 d04c 0630 369f   2b66 d00a 9004 0560 
+050 9005 0460 cac0 b010   9c43 0360 36c6 2b66 
+060 d04c 0630 36d0 2b66   d078 8620 2363 d0b6
+070 860d 2363 d09c b04c   9c44 0360 8620 2363 
+080 d0a4 860d 2363 d08a   b04c 9c42 36d0 830a 
+090 2663 2930 9c43 36d0   1263 b0c8 9c42 36d0 
+0a0 0260 b0c8 9c42 36d0   830a 2663 2930 9c43
+0b0 36d0 1263 b0c0 9c42   36d0 0260 b0c4   
+                                    
+0c0 8102 b0ca 8101 b0ca   8100 0620 36c1 2b66 
+0d0 d0f8 8602 afe0 8630   afe1 0720 6c00 afe0 
+0e0 d0f8 8630 afe1 b13c   8700 2362 d114 9c20
+0f0 8720 2362 d114 b0f8   9004 0560 9005 0460
+100 3410 cac0 b010 9004   0560 9005 0460 3420
+110 cac0 b010 371d 6c00   8342 2363 d120 b106
+120 2077 6c00 8349 2363   d12c b106 2077 6c00 
+130 834e 2363 d138 b106   0320 baf2 9c00 b0e8
+
+140 8361 c940 8361 c940   830a c940 b010 
+150 496e 7620 496e 7075   740a 0000 
+160 496e 7620 4620 4964   0a00
+170 4e6f 7420 6120 4249   4e0a 0000
+
+000 //pointers
+002 b010 new prompt
+004 0150 GP 
+006 
+008   
+00a b140 = alpha 2ref     ----> // TOKEN! _printString"aa\n" 
+00c
+00e 
+
+New Prompt
+010 833e c940 _putchar '>'
+    ca50      _getline()
+
+// char[0]
+016 9c42      
+    0360      r6,r3 = char @ KB[0]
+    36c6 2b66 r6 = sign (char -39)
+    d02a      If positive -> [02a] //3a+
+    0630 
+    36d0 2b66 r6 = sign (char -30)
+    d058      If positive -> number
+    b04c      else -> invalid input error
+02a 0630 
+    36a5 2b66 r6 = sign (char -5a)
+    d03c      If positive -> [03c] //5b+
+    0630 
+    36bf 2b66 r6 = sign (char -41)
+    d00a      If positive -> alpha
+    b04c      else -> invalid input error
+03c 0630 
+    3685 2b66 r6 = sign (char -7a)
+    d04c      if positive -> invalid input error
+    0630 
+    369f 2b66 r6 = sign (char -61)
+    d00a      If positive -> alpha
+              else -> invalid input error
+
+// Invalid input error
+04c 9004 0560
+    9005 0460 r4-5 =GP+00
+    cac0      _printString(Invalid Input),
+    b010      new prompt
+
+// number
+058 9c43      
+    0360      r6,r3 = char @ KB[1]
+    36c6 2b66 r6 = sign (char -39)
+    d04c      If positive -> invalid input error 
+    0630 
+    36d0 2b66 r6 = sign (char -30)
+    d078      If positive -> number, number
+    8620 2363 r6 = xor (char, 20)
+    d0b6      if char = 20 -> number, space
+    860d 2363 r6 = xor (char, 0d)
+    d09c      if char = 20 -> number, end
+    b04c      else -> invalid input error     
+
+// number, number
+078 9c44      
+    0360      r6,r3 = char @ KB[2]
+    8620 2363 r6 = xor (char, 20)
+    d0a4      if char = 20 -> number, number, space
+    860d 2363 r6 = xor (char, 0d)
+    d08a      if char = 20 -> number, number, end
+    b04c      else -> invalid input error
+
+// number, number, end
+08a 9c42 
+    36d0 830a 
+    2663 2930 r3 = (char[0] - '0') * 10
+    9c43 36d0
+    1263 r2 = (char[0] - '0') * 10 + (char[1] -'0') = F id
+    b0c8 -> F id                                     
+
+// number, end
+09c 9c42 36d0
+    0260 r2 = char[0] = F id
+0a2 b0c8 -> F id                                    
+
+//number, number, space
+0a4 9c42 
+    36d0 830a 
+    2663 2930 r3 = (char[0] - '0') * 10
+    9c43 36d0
+    1263 r2 = (char[0] - '0') * 10 + (char[1] -'0') = F id
+    b0c0 -> F id + arg                                    
+
+// number, space
+0b6 9c42 36d0
+    0260 r2 = char[0] = F id
+0bc b0c4 -> F id + arg 
+
+// set r1 = arg flag
+0c0 8102 r1 = 2 = 2dec before arg
+    b0ca
+0c4 8101 r1 = 1 = 1dec before arg
+    b0ca
+0c8 8100 r1 = 0 = no arg
+
+// validate File id before exec 
+// r2 = i node number requested in hex
+// r1 = arg flag
+0ca 0620
+    36c1 2b66 r6 = sign (char -3f)
+    d0f8      If positive -> invalid file id
+    8602 afe0    
+    8630 afe1 _copyHdtoRam(02 to 30) //load inodeTable
+    0720 6c00 r6=block cointaining inode
+    afe0 d0f8 If block n = 00 -> invalid file id
+    8630 afe1 _copyHdtoRam(xx to 30) //load blockContaininginode 
+    b13c (9c00) BUG! -> patch 1
+0e8 8700
+    2362 d114 if 1st inode -> check file is executable offset 00
+    9c20 8720
+    2362 d114 if 2nd inode -> check file is executable offset 20
+    b0f8      else -> invalid file id
+
+//  Invalid file id
+0f8 9004 0560
+    9005 0460
+    3410      r4-5 = GP+10
+    cac0      _printString(Invalid File Id),
+    b010      new prompt
+
+//  File not executable
+106 9004 0560
+    9005 0460
+    3420      r4-5 = GP+20
+    cac0      _printString(File not executable),
+    b010      new prompt
+
+// check file is executable
+// r7 = offset
+114 371d 
+    6c00 8342 
+    2363 d120 if [c00 + offset +1d] ='B'
+    b106      else -> file not executable
+120 2077      i++
+    6c00 8349 
+    2363 d12c if [c00 + offset +1e] ='I'
+    b106      else -> file not executable
+12c 2077      i++
+    6c00 834e 
+    2363 d138 if [c00 + offset +1f] ='N' -> exec
+    b106      else -> file not executable
+
+//exec
+138 0320      r3 = inode to exec
+    baf2      _exec(F id)
+
+//patch 1
+//can't read buffer on 1st instruction after loading it
+13c 9c00 b0e8  
+
+// TOKEN!
+140 8361 c940 8361 c940   830a c940 b010 = _printc(aa\n) 
+
+
+  Data [GP+adr]
+
+// KB Buffer[1d] = c42-c5f
+// GP = 150 
+
+150 496e 7620 496e 7075   740a 0000           "Inv Input\n"
+160 496e 7620 4620 4964   0a00                "Inv F Id\n"
+170 4e6f 7420 6120 4249   4e0a 0000           "Not a BIN\n"
+
+
+

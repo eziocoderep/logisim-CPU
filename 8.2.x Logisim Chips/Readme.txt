@@ -1,7 +1,7 @@
 
 8 Bits CPU
 A faster 8 Bit machine, the ram is a bit more elaborate with a separate circuit to test caches.
-There is a small led screen and a simple input kp to test I/O
+There is a small led screen and a simple input kb to test I/O
 
 The instruction set has been expanded.
 It comes with 2 test progam written in the cpu asm:
@@ -24,6 +24,6 @@ The 8.3.x directory contains various components tests:
 - DMA a direct memory access to connect a HD to the next cpu I'm planning the 8.4.x
 - MMU a memory management unit to implement virtual memory and in theory processes
   It's a bit of a dead end, the hardware for VM works fine but this machine address space
-     is way to small for the necessary code (scheduler process tables etc)
+     is way to small for the necessary code (scheduler, process tables etc)
 - More I/O test devices: a new led matrix screen and a Hex keyboard with the supporting hardware
 

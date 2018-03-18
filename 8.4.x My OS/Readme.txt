@@ -18,17 +18,14 @@ bb6 _printBiteHex(r3)
 
 The Hard drive immage contains a number of programms:
 
-5 MBL Master Boot Loader, It's called by default when booting the cpu, loads a ram image with the OS and runs CMD.
-7 CMD It's a simple DOS like console that displays a prompt and waits for commands, just type the inode number of 
-      the program you want to run from this list.
-8 DIR It a clone of the dir command in dos (list) that lists the content of the root directory (2) by default or the 
-      specified directory if you provide a parameter >8 3 for Sys.dir or >8 10 for test.dir
+5 MBL Master Boot Loader, It's called by default when booting the CPU, loads a ram image with the OS and runs CMD.
+7 CMD It's a simple DOS like console that displays a prompt and waits for commands, just type the inode number of the program you want to run from this list.
+8 DIR It a clone of the dir command in dos (list) that lists the content of the root directory (2) by default or the specified directory if you provide a parameter >8 3 for Sys.dir or >8 10 for test.dir
 9 Fib It's a recursive implementation of Fibonacci to test stack discipline, it asks for an input, n, and prints Fib(n)
 11 Sum1000 Sums the first 1000 integers and prints out the result in hex
 12 Nprime  Finds the first 4 prime numbers
 13 IO Test Prints a menu, asks to choose an option and prints out theascii table, a picture or a echo of the input line
-14 Hex Editor It's a very basic editor, you can load blocks in ram from HD, prints a page of ram to screen, write or 
-              modify a page in ram and then save it in HD.
+14 Hex Editor It's a very basic editor, you can load blocks in ram from HD, prints a page of ram to screen, write or modify a page in ram and then save it in HD.
 
 To run the simulation:
 open logisim

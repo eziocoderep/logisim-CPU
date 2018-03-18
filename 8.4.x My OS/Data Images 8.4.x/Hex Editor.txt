@@ -1,0 +1,403 @@
+Hex Editor v.1.1
+
+Setup
+-print header
+-call Help 
+main menu loop
+-error check line and call command
+
+Hex Editor v.1.1
+List of Commands:
+r xx print screen
+w adr data: to write
+    data in ram(adr)
+x code to exec code
+z to exit h for help
+H xx xx HD to RAM
+R xx xx RAM to HD
+>
+
+List of commands
+[68] h        Help print commant details  
+[72] r xx     Print ram(block) to screen
+[77] w(adr)   xxxx xxxx xxxx xxxx
+              Write 2, 4, 6 or 8 bites to ram(adr)
+[48] H xx xx  Move 1 block from HD (0 to ff) to RAM (1c to 1f)
+[52] R xx xx  Move 1 block from RAM to HD
+[78] x xxxx xxxx xxxx xxxx xxxx (Not Implemented)
+              execute up to 10 bites of code (due to KB Buffer)
+[7a] z        Exit
+
+
+
+0e __ 00 00 58 __
+48 65 78 20 45 64 69 74 00 00 00 00 2e 42 49 4e
+
+Main
+000 0000 b010 0400  RA                                 
+010 830c c940 b1ae 8600   aff0 8609 aff1 833e 
+020 c940 ca50 9c42 0360   867a 2363 d076 8668
+030 2363 d1c4 8672 2363   d1f0 8677 2363 d206
+040 8678 2363 d1de 8648   2363 d0ac 8652 2363
+050 d186 9004 0560 9005   0460 cac0 c060 b016 
+060 8600 aff0 8609 aff1   8300 8624 b16e 36ff 
+070 d074 b06c fffe 830c   c940 baf0 0360 36c6 
+
+080 2b66 d08e 0630 36d0   2b66 d0a0 b052 0630 
+090 3699 2b66 d052 0630   369f 2b66 d0a6 b052
+0a0 0630 36d0 fffe 0630   36a9 fffe 9c44 c07c
+0b0 8310 2663 2920 9c45   c07c 1626 afe0 9c47
+0c0 c07c 8310 2663 2920   9c48 c07c 1626 0360
+0d0 861c 2363 d0ea 861d   2363 d0ea 861e 2363
+0e0 d0ea 861f 2363 d0ea   b052 0630 afe1 0630
+0f0 c0f6 c060 b016 0360   8440 2634 2940 2850 
+
+100 06c0 a006 06d0 a007   8611 aff0 8600 aff1
+110 cbb6 8600 aff0 8601   aff1 8700 4347 cbb6
+120 2077 4347 cbb6 2077   8320 c940 4347 cbb6
+130 2077 4347 cbb6 2077   8320 c940 4347 cbb6
+140 2077 4347 cbb6 2077   8320 c940 4347 cbb6
+150 2077 4347 cbb6 2077   830a c940 8640 2367 
+160 d164 b11c 9007 0d60   9006 0c60 fffe 0160
+170 06c0 a006 06d0 a007   c940 9007 0d60 9006
+
+180 0c60 0610 b06e 9c44   c07c 8310 2663 2920
+190 9c45 c07c 1626 afe2   9c47 c07c 8310 2663 
+1a0 2920 9c48 c07c 1626   afe3 c060 b016 8600 
+1b0 aff0 8600 aff1 9004   0560 9005 0460 8330
+1c0 1443 cac0 8600 aff0   8601 aff1 9004 0560
+1d0 9005 0460 8350 1443   cac0 c060 b016 9004
+1e0 0560 9005 0460 8310   1443 cac0 c060 b016
+1f0 9c44 c07c 8310 2663   2920 9c45 c07c 1626
+
+200 c0f6 c060 b016 8607   a00a a008 8600 a00b
+210 9c44 c07c 8310 2663   2920 9c45 c07c 1626
+220 a009 900a 0760 861d   2367 d270 6c40 0360
+230 2067 a00a 860d 2363   d270 8620 2363 d222
+240 0630 c07c 8310 2663   2920 900a 0760 6c40
+250 0360 2067 a00a 0630   c07c 1326 9008 0560
+260 9009 0460 900b 0760   5347 2067 a00b b222
+270 c060 b016 
+
+
+
+
+    
+Data
+400 496e 7620 496e 7075   7400 "Inv Input"
+410 4e6f 7420 496d 706c   656d 656e 7465 6400 'Not Implemented'  
+420 
+430 4865 7820 4564 6974   6f72 2076 2e31 2e31 "Hex Editor v.1.1 "
+440 2000  
+450 4c69 7374 206f 6620   436f 6d6d 616e 6473
+460 3a20 2020 
+              7220 7878   2070 7269 6e74 2073
+470 6372 6565 6e20 2020
+                          7720 6164 7220 6461
+480 7461 3a20 746f 2077   7269 7465
+                                    2020 2020
+490 6461 7461 2069 6e20   7261 6d28 6164 7229
+4a0 7820 636f 6465 2074   6f20 6578 6563 2063
+4b0 6f64 6520
+              7a20 746f   2065 7869 7420 6820
+4c0 666f 7220 6865 6c70
+                          4820 7878 2078 7820
+4d0 4844 2074 6f20 5241   4d20 2020
+                                    5220 7878
+4e0 2078 7820 5241 4d20   746f 2048 4420 2000                                        
+
+
+000      restart
+002 b010
+004 0400 Pointer to data
+006  RA
+008 07xx pointer to next write
+00a      index of kb buffer
+00c
+00e 
+
+010 830c c940 Cls
+014 b1ae      goto setup
+//getWork
+//main menu loop
+016 8600 aff0 set cursor position
+    8609 aff1
+    833e c940 print prompt 
+    ca50      getline
+    9c42 0360 load char[0] of input
+    867a 2363
+    d076      if char[0]=z goto exit  
+    8668 2363
+    d1c4      if char[0]=h goto help
+    8672 2363
+    d1f0      if char[0]=r goto read
+    8677 2363
+    d206      if char[0]=w goto write
+    8678 2363
+    d1de      if char[0]=x goto execute (Not Implemented)
+    8648 2363
+    d0ac      if char[0]=H goto HDtoRAM
+    8652 2363
+    d186      if char[0]=R goto RAMtoHD
+              else drop into Invalid Input
+
+//Invalid Input
+052 9004 0560
+    9005 0460 r4,5= Pointer to data
+    cac0      call _printString(Inv Input)
+    c060      call clearInputArea
+    b016      goto getWork
+
+//ClearInputArea
+060 8600 aff0 reset cursor posistion
+    8609 aff1
+    8300 8624 
+06c b16e (c940) putchar(00) 32 times //Goto Patch1 
+    36ff d074 if r6=0 goto return
+    b06c     else goto next 00 
+074 fffe 
+
+//Exit
+076 830c c940 Cls
+    baf0      Exit
+
+//_charToHex(r6)
+//r6 = char to convert
+07c 0360      r6,r3 = char to convert
+    36c6 2b66 r6 = sign (char -39)
+    d08e      If positive -> [08e] //3a+
+    0630 
+    36d0 2b66 r6 = sign (char -30)
+    d0a0      If positive -> number
+    b052      else -> invalid input
+08e //3a+
+    0630 
+    3699 2b66 r6 = sign (char -66)
+    d052      If positive -> [052] //invalid input
+    0630 
+    369f 2b66 r6 = sign (char -61)
+    d0a6      If positive -> alpha
+    b052      else -> invalid input
+0a0 //number
+    0630 36d0 r6 = (char - '0')
+    fffe      return
+0a6 //alpha
+    0630 36a9 r6 = (char - 'a' + 09)
+    fffe      return
+
+    //HDtoRAM
+    //read "HD" c44 c45 and convert to hex
+    //read "RAM" c47 c48 and convert to hex
+    //validate ram adr (1c to 1f)
+    //copy block and display to screen
+0ac //HDtoRAM    
+    9c44 c07c r6 = _charToHex(c44)
+    8310
+    2663 2920 r2 = Char[c44] * 16
+    9c45 c07c r6 = _charToHex(c45)
+    1626      r6 = Char[c44] * 16 + Char[c45]
+    afe0
+    9c47 c07c r6 = _charToHex(c47)
+    8310
+    2663 2920 r2 = Char[c47] * 16
+    9c48 c07c r6 = _charToHex(c48)
+    1626      r6 = Char[c47] * 16 + Char[c48]
+    0360
+    861c 2363
+    d0ea      if Block=1c goto copy  
+    861d 2363
+    d0ea      if Block=1d goto copy
+    861e 2363
+    d0ea      if Block=1e goto copy
+    861f 2363
+    d0ea      if Block=1f goto copy
+    b052      else goto invalid input
+0ea //copy
+    0630
+    afe1      Copy Block to Ram
+    0630
+    c0f6      call printBlock(r6)
+    c060      call clearInputArea
+    b016      goto getWork
+
+    //Print Block Number in line 0
+    // Print block in lines 1-8
+0f6 //printBlock(r6)
+    0360      r3= Block Number
+    8440 2634 HiLo = Block N * 40 = Data Adr
+    2940 2850 r4 = Lo r5 = Hi
+    06c0 a006 Save RA
+    06d0 a007
+    8611 aff0 set cursor posistion (0, 11)
+    8600 aff1
+    cbb6      call _printBiteHex(r3)
+    8600 aff0 set cursor posistion (1, 0)
+    8601 aff1
+    8700
+11c //next line 
+    4347      r3 = Data(i)
+    cbb6      call _printBiteHex(r3) 
+    2077      i++
+    4347      r3 = Data(i)
+    cbb6      call _printBiteHex(r3) 
+    2077      i++
+    8320 c940 _putchar(space) 
+    4347      r3 = Data(i)
+    cbb6      call _printBiteHex(r3) 
+    2077      i++
+    4347      r3 = Data(i)
+    cbb6      call _printBiteHex(r3) 
+    2077      i++
+    8320 c940 _putchar(space) 
+    4347      r3 = Data(i)
+    cbb6      call _printBiteHex(r3) 
+    2077      i++
+    4347      r3 = Data(i)
+    cbb6      call _printBiteHex(r3) 
+    2077      i++
+    8320 c940 _putchar(space) 
+    4347      r3 = Data(i)
+    cbb6      call _printBiteHex(r3) 
+    2077      i++
+    4347      r3 = Data(i)
+    cbb6      call _printBiteHex(r3) 
+    2077      i++
+    830a c940 _putchar(\n) 
+
+    8640 
+    2367 d164 if i = 40 end loop
+    b11c      else nex line
+164 //end loop   
+    9007 0d60 Restor RA
+    9006 0c60
+    fffe
+
+16e //Patch1
+    //Nested call: RA need to be preserved
+    0160      keep r6
+    06c0 a006 save RA
+    06d0 a007
+    c940      _putchar(00) 
+    9007 0d60 restore RA
+    9006 0c60
+    0610      restore r6
+    b06e      return 
+
+186 //RAMtoHD
+    9c44 c07c r6 = _charToHex(c44)
+    8310
+    2663 2920 r2 = Char[c44] * 16
+    9c45 c07c r6 = _charToHex(c45)
+    1626      r6 = Char[c44] * 16 + Char[c45]
+    afe2
+    9c47 c07c r6 = _charToHex(c47)
+    8310
+    2663 2920 r2 = Char[c47] * 16
+    9c48 c07c r6 = _charToHex(c48)
+    1626      r6 = Char[c47] * 16 + Char[c48]
+    afe3      Copy Block to HD
+    c060      call clearInputArea
+    b016      goto getWork
+
+1ae //Setup
+    8600 aff0 set cursor position
+    8600 aff1
+    9004 0560 r4,5= Pointer to data
+    9005 0460
+    8330 1443 r4 = pointer +30
+    cac0      call _printString(Header)
+              drop into Help
+
+1c4 //Help
+    8600 aff0 set cursor position
+    8601 aff1
+    9004 0560 r4,5= Pointer to data
+    9005 0460
+    8350 1443 r4 = pointer +50
+    cac0      call _printString(Help)
+    c060      call clearInputArea
+    b016      goto getWork
+
+1de //Not imp
+    9004 0560 r4,5= Pointer to data
+    9005 0460
+    8310 1443 r4 = pointer + 10
+    cac0      call _printString(Not Imp)
+    c060      call clearInputArea
+    b016      goto getWork
+
+1f0 //read
+    9c44 c07c r6 = _charToHex(c44)
+    8310
+    2663 2920 r2 = Char[c44] * 16
+    9c45 c07c r6 = _charToHex(c45)
+    1626      r6 = Char[c44] * 16 + Char[c45]
+    c0f6      call printBlock(r6)
+    c060      call clearInputArea
+    b016      goto getWork
+
+206 //write
+    //w_xx_data
+    8607 a00a read index = 7
+    a008      pointer Hi = 7
+    8600 a00b write index = 0
+    9c44 c07c r6= _charToHex(c44)
+    8310
+    2663 2920 r2 = Char[c44] * 16
+    9c45 c07c r6 = _charToHex(c45)
+    1626 a009 pointer Lo= r6 = Char[c44] * 16 + Char[c45]
+    
+222 //next 2 chars
+    900a 0760 r7= read index
+    861d 2367
+    d270      if read index = 1d (almost end of KBbuffer) goto exit write
+    6c40 0360 r3 =kb buffer[read index]
+    2067 a00a read index++ and save it
+    860d 2363
+    d270      if char = 0d return goto exit write
+    8620 2363
+    d222      if char = 20 space goto next 2 chars
+    0630 c07c r6= _charToHex(c40 + r index)
+    8310
+    2663 2920 r2 = Char[] * 16
+    900a 0760 r7= read index
+    6c40 0360 r3 =kb buffer[read index]
+    2067 a00a read index++ and save it
+    0630 c07c r6= _charToHex(c40 + r index)
+    1326      r3= hex[index-2,index-1]
+    9008 0560 r4,5 = write destination
+    9009 0460 
+    900b 0760 r7 = write index
+    5347      mem[writedestination + w index] = r3 = hex
+    2067 a00b write index++ and save it
+    b222      goto next 2 chars
+270 //exit write
+    c060      call clearInputArea
+    b016      goto getWork
+
+
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

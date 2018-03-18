@@ -1,0 +1,63 @@
+_printBiteDec(r3)  b80 - bb5
+
+print the 2(or3)decimals to screen
+
+b80 f0c0 f0d0 f060 860a   2736 2830 f030 2930  
+b90 2736 2830 f030 2930   0630 dba2 0000 3330 
+ba0 c940 f130 3330 c940   f130 3330 c940 f160 
+bb0 f1d0 f1c0 fffe   
+
+//r3=bite
+b80 f0c0 f0d0 push RA
+    f060      push r6
+    860a 2736 H=rem1 L=bite/10
+    2830 f030 push rem1 
+    2930 2736 H=rem2 L=bite/100
+    2830 f030 push rem2     STACK = r6, rem1, rem2 
+    2930    
+    0630 dba2 if (bite/100)=0 goto print 2
+    0000      nop else print 3
+// Print 3
+b9e 3330 c940 _putchar(3rd+30)
+// Print 2
+ba2 f130
+    3330 c940 _putchar(2nd+30)
+    f130
+    3330 c940
+    f160 f1d0 
+    f1c0 fffe restore r6, Ra and return  
+
+---------------------------------------------
+
+_printBiteHex(r3)  bb6 - bef 
+
+print the 2 hex to screen  
+                                     
+bb0                f0c0   f0d0 f060 8610 2736
+bc0 2930 0630 36f6 2b66   dbd0 3330 c940 bbd4 
+bd0 3357 c940 2830 0630   36f6 2b66 dbe4 3330 
+be0 c940 bbe8 3357 c940   f160 f1d0 f1c0 fffe
+
+
+//r3=bite
+bb6 f0c0 f0d0 push RA
+    f060      push r6
+    8610 2736 H=rem L=bite/16
+    2930 0630 r3,r6 = bite/16
+    36f6 2b66 r6 = sign (bite/16 - 9)
+    dbd0      if positive goto a+
+    3330 c940 else print char
+    bbd4      goto next half
+// a+
+bd0 3357 c940 print char a+
+// second half
+bd4 2830 0630 r3,r6 = rem
+    36f6 2b66 r6 = sign (rem - 9)
+    dbe4      if positive goto a+2
+    3330 c940 else print char
+    bbe8      goto end
+// a+2
+be4 3357 c940 print char a+
+// end
+be8 f160 f1d0 
+    f1c0 fffe restore r6, Ra and return   

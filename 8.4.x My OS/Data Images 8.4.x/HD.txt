@@ -1,0 +1,89 @@
+
+0    MBL                                                     Files
+1    Super Block                                           2 Root.Dir  
+2    iNodes Bitmap                                         3 SYS.Dir
+3-6  Blocks Bitmap                                         4 HD.Dat 
+7-ff iNodes and data                                       5 MBL.Bin
+                                                           6 My OS.Dat
+iNodes = block number where the inode (file) is defined    7 CMD.Bin
+02 00 00 07 08   0a 0a 0d 0d   27 08 34 36   36 37 27      8 Dir.Bin
+   00 00 00 00   00 00 00 00   00 00 00 00   00 00 00 00   9 Fib.Bin
+   00 00 00 00   00 00 00 00   00 00 00 00   00 00 00 00  10 Test.Dir 
+   00 00 00 00   00 00 00 00   00 00 00 00   00 00 00 00  11 Sum1k.Bin
+                                                          12 NPrime.Bin
+Blocks = which file owns a block                          13 IO Test.Bin
+03 05 04 04 04   04 04 04 02   02 03 03 05   05 03 06 06  14 Hex Edit
+   06 06 06 06   06 06 06 06   06 06 06 06   06 06 06 06
+   07 07 07 05   07 07 07 03   08 08 08 08   09 09 09 09
+   08 08 08 08   02 0a 0a 0a   0b 0b 0b 0b   0c 0c 0c 0c
+
+04 0c 0c 0c 0c   0c 0c 0c 0c   0c 0c 0c 0c   0d 0d 0d 0d 
+   0d 0d 0d 0d   0d 0d 0d 0d   0e 0e 0e 0e   0e 0e 0e 0e
+   0e 0e 0e 0e   0e 0e 0e 0e   0e 0e 0e 0e   0e 0e 0e 0e
+                 00 00 00 00   00 00 00 00   00 00 00 00
+
+05 00 00 00 00   00 00 00 00   00 00 00 00   00 00 00 00
+   00 00 00 00   00 00 00 00   00 00 00 00   00 00 00 00
+   00 00 00 00   00 00 00 00   00 00 00 00   00 00 00 00
+   00 00 00 00   00 00 00 00   00 00 00 00   00 00 00 00
+
+06 00 00 00 00   00 00 00 00   00 00 00 00   00 00 00 00
+   00 00 00 00   00 00 00 00   00 00 00 00   00 00 00 00
+   00 00 00 00   00 00 00 00   00 00 00 00   00 00 00 00
+   00 00 00 00   00 00 00 00   00 00 00 00   00 00 00 00
+
+   (Root)
+07 02 03 00 00   07 02 34 01 
+   .
+   02 03         07 02 34 01
+   ..
+08 03 04         09 02 0d 01   27 01 
+   SYS.DIR
+   09 04         2c 04
+   Fib.BIN   
+   (SYS)
+09 03 04         09 02 0d 01   27 01 
+   .
+   02
+   ..
+0a 04 06         01 06   
+   HD.DAT
+   05 04         00 01 0b 02   23 01
+   MBL.BIN  
+(0b-0c MBL)
+0d 06 12         0e 12 
+   My OS.DAT
+   07 06         20 03 24 03
+   CMD.BIN
+(0e-1f MyOS) 
+(20-22 CMD)
+(23 MBL)
+(23-26 CMD)
+27 08 08         28 04 30 04
+   Dir.Bin
+   0e 18         58 18
+   Hex Edit.Bin
+(28-2b Dir)
+(2c-2f Fib)
+(30-33 Dir)
+34 0a 03         35 03
+   Test.DIR
+   __ __         __ __
+
+   (Test)
+35 0a 03         35 03 
+   .
+   02
+   ..
+36 0b 04         38 04
+   Sum1k.BIN
+   0c 10         3c 10
+   NPrime.BIN
+37 0d 0c         4c 0c
+   IO Test.BIN
+   __ __         __ __
+
+(38-3b Sum1k)
+(3c-4b NPrime)
+(4c-57 IO Test)
+(58-6f Hex Edit)
